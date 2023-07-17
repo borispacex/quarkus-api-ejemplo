@@ -1,0 +1,17 @@
+1. Nos dirigimos a la pagina de quarkus para generar el proyecto
+https://code.quarkus.io/
+
+2. Abrimos con el IDE
+
+3. Ejecutamos el proyecto
+mvn quarkus:dev
+
+4. agregamos extension de RESTEASY JACKSON
+mvn quarkus:add-extension -Dextensions="io.quarkus:quarkus-resteasy-reactive:3.2.0.Final"
+mvn quarkus:add-extension -Dextensions="io.quarkus:quarkus-resteasy-reactive-jackson:3.2.0.Final"
+
+
+
+
+5. Ejecutar nativamente
+mvn clean install -Dnative -Dquarkus="native.container-build=true"
