@@ -1,6 +1,6 @@
 package quarkus.interfaces;
 
-import quarkus.models.Temperatura;
+import quarkus.model.Temperatura;
 
 import java.util.List;
 import java.util.Optional;

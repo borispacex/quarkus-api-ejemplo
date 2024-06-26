@@ -1,8 +1,8 @@
-package quarkus.services;
+package quarkus.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import quarkus.interfaces.ITemperaturaService;
-import quarkus.models.Temperatura;
+import quarkus.model.Temperatura;
 
 import java.util.ArrayList;
 import java.util.Collections;

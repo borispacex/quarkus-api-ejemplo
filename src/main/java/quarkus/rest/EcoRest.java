@@ -1,4 +1,4 @@
-package quarkus.resources;
+package quarkus.rest;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -8,7 +8,7 @@ import jakarta.ws.rs.QueryParam;
 import java.util.Optional;
 
 @Path("/saludar")
-public class EcoResource {
+public class EcoRest {
 
     @GET
     public String saludar(@QueryParam("mensaje") String mensaje) {

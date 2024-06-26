@@ -1,32 +1,36 @@
-package quarkus.resources;
+package quarkus.rest;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import quarkus.models.Temperatura;
-import quarkus.services.TemperaturaService;
+import quarkus.model.Temperatura;
+import quarkus.service.TemperaturaService;
 
 import java.util.*;
 
 @Path("/temperaturas")
-public class TemperaturaResource {
+public class TemperaturaRest {
+
     private TemperaturaService temperaturaService;
 
     @Inject
-    public TemperaturaResource(TemperaturaService temperaturaService) {
+    public TemperaturaRest(TemperaturaService temperaturaService) {
         this.temperaturaService = temperaturaService;
     }
+
     @POST
     public Temperatura nueva(Temperatura temp) {
         this.temperaturaService.addTemperatura(temp);
         return temp;
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Temperatura> list() {
         return this.temperaturaService.obtenerTemperaturas();
     }
+
 
     @GET
     @Path("/maxima")
@@ -41,6 +45,7 @@ public class TemperaturaResource {
                     .build();
         }
     }
+
     @GET
     @Path("/{ciudad}")
     @Produces(MediaType.APPLICATION_JSON)

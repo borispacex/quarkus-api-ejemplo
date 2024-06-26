@@ -1,4 +1,4 @@
-package quarkus.models;
+package quarkus.model;
 
 import java.util.Objects;
 
