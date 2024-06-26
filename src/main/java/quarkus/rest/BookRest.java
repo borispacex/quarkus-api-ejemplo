@@ -6,6 +6,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import quarkus.dto.Book;
+import quarkus.dto.BookPanache;
 import quarkus.repositiory.BookRepository;
 
 import java.util.List;
@@ -26,6 +27,19 @@ public class BookRest {
     public Book insert(Book insertedBook) {
         assert insertedBook.getId() == null;
         bookRepository.persist(insertedBook);
+        return insertedBook;
+    }
+
+    @GET
+    @Path("/list")
+    public List<BookPanache> index2() {
+        return BookPanache.listAll();
+    }
+
+    @POST
+    @Path("/save")
+    public BookPanache insert2(BookPanache insertedBook) {
+        insertedBook.persist();
         return insertedBook;
     }
 
