@@ -3,6 +3,8 @@ package quarkus.dto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 
@@ -17,6 +19,10 @@ public class Book {
     private int numPages;
     private LocalDate pubDate;
     private String description;
+    @CreationTimestamp
+    private LocalDate createDate;
+    @UpdateTimestamp
+    private LocalDate updateDate;
 
 
     public String getTitle() {
@@ -57,5 +63,21 @@ public class Book {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDate createDate) {
+        this.createDate = createDate;
+    }
+
+    public LocalDate getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDate updateDate) {
+        this.updateDate = updateDate;
     }
 }
