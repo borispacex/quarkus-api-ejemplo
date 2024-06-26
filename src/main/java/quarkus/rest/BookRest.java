@@ -1,11 +1,10 @@
 package quarkus.rest;
 
-import com.oracle.svm.core.annotate.Delete;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
-import quarkus.dto.Book;
-import quarkus.dto.BookPanache;
+import quarkus.entity.Book;
+import quarkus.entity.BookPanache;
 import quarkus.repositiory.BookRepository;
 
 import java.util.List;
