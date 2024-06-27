@@ -1,5 +1,6 @@
 package quarkus.rest;
 
+import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -20,6 +21,13 @@ public class BookRest {
     @GET
     public List<Book> index() {
         return bookRepository.listAll();
+    }
+
+    @GET
+    @Path("/filter")
+    public List<Book> indexFilter(@QueryParam("numPages") Integer numPages) {
+        if (numPages == null) return bookRepository.listAll(Sort.by("pubDate", Sort.Direction.Descending));
+        return bookRepository.list("numPages >= ?1", numPages);
     }
 
     @POST
