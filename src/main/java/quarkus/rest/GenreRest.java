@@ -1,5 +1,6 @@
 package quarkus.rest;
 
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
@@ -8,6 +9,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import quarkus.dto.CreateGenreDto;
+import quarkus.dto.ResponseGenreDto;
 import quarkus.dto.UpdateGenreDto;
 import quarkus.entity.Genre;
 import quarkus.mapper.IGenreMapper;
@@ -28,13 +30,15 @@ public class GenreRest {
     private IGenreMapper mapper;
 
     @GET
-    public PaginatedResponse<Genre> list(
+    public PaginatedResponse<ResponseGenreDto> list(
             @QueryParam("page") @DefaultValue("1") int page,
             @QueryParam("q") String q
     ) {
+
         var query = genreRepository.findPage(page);
-        if (q != null) query.filter("name.like", Parameters.with("name", "%" + q + "%"));
-        return new PaginatedResponse<>(query);
+        PanacheQuery<ResponseGenreDto> present = query.project(ResponseGenreDto.class);
+        if (q != null) present.filter("name.like", Parameters.with("name", "%" + q + "%"));
+        return new PaginatedResponse<>(present);
     }
 
     @POST
@@ -46,9 +50,10 @@ public class GenreRest {
 
     @GET
     @Path("{id}")
-    public Genre get(@PathParam("id") Long id) {
+    public ResponseGenreDto get(@PathParam("id") Long id) {
         return genreRepository
                 .findByIdOptional(id)
+                .map(mapper::present)
                 .orElseThrow(() -> new NoSuchElementException("Genre " + id + " no encontrado"));
     }
 
