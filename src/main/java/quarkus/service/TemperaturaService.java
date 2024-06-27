@@ -1,7 +1,6 @@
 package quarkus.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import quarkus.interfaces.ITemperaturaService;
 import quarkus.model.Temperatura;
 
 import java.util.ArrayList;

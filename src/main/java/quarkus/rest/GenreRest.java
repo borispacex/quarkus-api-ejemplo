@@ -7,7 +7,10 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+import quarkus.dto.CreateGenreDto;
+import quarkus.dto.UpdateGenreDto;
 import quarkus.entity.Genre;
+import quarkus.mapper.IGenreMapper;
 import quarkus.repositiory.GenreRepository;
 import quarkus.response.PaginatedResponse;
 
@@ -21,6 +24,9 @@ public class GenreRest {
     @Inject
     private GenreRepository genreRepository;
 
+    @Inject
+    private IGenreMapper mapper;
+
     @GET
     public PaginatedResponse<Genre> list(
             @QueryParam("page") @DefaultValue("1") int page,
@@ -32,9 +38,10 @@ public class GenreRest {
     }
 
     @POST
-    public Response create(Genre genre) {
-        genreRepository.persist(genre);
-        return Response.created(URI.create("/genres/" + genre.getId())).entity(genre).build();
+    public Response create(CreateGenreDto genre) {
+        var entity = mapper.fromCreate(genre);
+        genreRepository.persist(entity);
+        return Response.created(URI.create("/genres/" + entity.getId())).entity(entity).build();
     }
 
     @GET
@@ -47,11 +54,11 @@ public class GenreRest {
 
     @PUT
     @Path("{id}")
-    public Genre update(@PathParam("id") Long id, Genre genre) {
+    public Genre update(@PathParam("id") Long id, UpdateGenreDto genre) {
         Genre found = genreRepository
                 .findByIdOptional(id)
                 .orElseThrow(() -> new NoSuchElementException("Genre " + id + " no encontrado"));
-        found.setName(genre.getName());
+        mapper.update(genre, found);
         genreRepository.persist(found);
         return found;
     }

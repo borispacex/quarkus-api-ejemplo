@@ -1,4 +1,4 @@
-package quarkus.interfaces;
+package quarkus.service;
 
 import quarkus.model.Temperatura;
 
