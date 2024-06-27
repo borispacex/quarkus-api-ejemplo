@@ -1,6 +1,7 @@
 package quarkus.rest;
 
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -22,10 +23,11 @@ public class GenreRest {
 
     @GET
     public PaginatedResponse<Genre> list(
-            @QueryParam("page") @DefaultValue("1") int page
+            @QueryParam("page") @DefaultValue("1") int page,
+            @QueryParam("q") String q
     ) {
-        Page p = new Page(page - 1, 5);
-        var query = genreRepository.findAll(Sort.descending("createdAt")).page(p);
+        var query = genreRepository.findPage(page);
+        if (q != null) query.filter("name.like", Parameters.with("name", "%" + q + "%"));
         return new PaginatedResponse<>(query);
     }
 
