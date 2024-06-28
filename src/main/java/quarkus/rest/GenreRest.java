@@ -6,6 +6,7 @@ import io.quarkus.panache.common.Parameters;
 import io.quarkus.panache.common.Sort;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import quarkus.dto.CreateGenreDto;
@@ -15,6 +16,7 @@ import quarkus.entity.Genre;
 import quarkus.mapper.IGenreMapper;
 import quarkus.repositiory.GenreRepository;
 import quarkus.response.PaginatedResponse;
+import quarkus.validator.GenreValidator;
 
 import java.net.URI;
 import java.util.NoSuchElementException;
@@ -28,6 +30,9 @@ public class GenreRest {
 
     @Inject
     private IGenreMapper mapper;
+
+    @Inject
+    private GenreValidator validator;
 
     @GET
     public PaginatedResponse<ResponseGenreDto> list(
@@ -43,6 +48,8 @@ public class GenreRest {
 
     @POST
     public Response create(CreateGenreDto genre) {
+        var errors = this.validator.validateGenre(genre);
+        if (errors.isPresent()) return Response.status(400).entity(errors.get()).build();
         var entity = mapper.fromCreate(genre);
         genreRepository.persist(entity);
         return Response.created(URI.create("/genres/" + entity.getId())).entity(entity).build();
